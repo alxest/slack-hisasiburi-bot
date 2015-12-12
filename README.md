@@ -15,6 +15,7 @@ Greet your colleague with nice-looking pics.
 - Make [slack bot integration](https://slack.com/services/new/bot).
 - Install java. (Tested on version 1.8)
 - Just download .jar file.
+- Set "SLACK_BOT_TOKEN" environment variable with your token. (i.e. export SLACK_BOT_TOKEN="blahblahblah")
 - Run with "java -jar".
 
 ## Design Philosophy ##
