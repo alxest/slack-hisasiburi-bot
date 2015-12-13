@@ -12,6 +12,7 @@ object HisasiburiBotRunner extends App with Configure {
   val client = SlackApiClient(Token)
   val d = 5.seconds
   val loopd: Long = 10000
+  val ChannelId = Await.result(client.listChannels(0), d).find(_.name == Channel).get.id
 
   val res = client.listUsers() // => Future[Seq[Channel]]
 
@@ -32,7 +33,7 @@ object HisasiburiBotRunner extends App with Configure {
     )
     println("sending " + text)
     val res = client.postChatMessage(
-      channelId = Channel,
+      channelId = "#" + Channel,
       text = text,
       username = Some(BotName),
       asUser = Some(false),
@@ -46,26 +47,4 @@ object HisasiburiBotRunner extends App with Configure {
     res
   }
 
-  import scala.annotation._
-  @tailrec
-  def loop(wasActive: Seq[Boolean]): Any = {
-    // https://api.slack.com/docs/rate-limits
-    val x: Seq[Future[String]] = targetUsers.map(u => client.getUserPresence(u.id))
-    val isActive: Seq[Boolean] = Await.result(Future.sequence(x), d) map (_ == "active") //use map instead?
-    assert(wasActive.size == isActive.size)
-    assert(targetUsers.size == isActive.size)
-    for(i <- 0 to wasActive.size-1) { // change to recursive?
-      (wasActive(i), isActive(i)) match {
-        case (true, false) => postMessage(ByeUrl, byeText(targetUsers(i).name))
-        case (false, true) => postMessage(HiUrl, hiText(targetUsers(i).name))
-        case _ => ()
-      }
-    }
-    Thread.sleep(loopd)
-    loop(isActive)
-  }
-  loop(Seq.fill(targetUsers.size)(false))
-
-  //todo access logs with admin
-  //todo outgoing webhook & heroku
 }
