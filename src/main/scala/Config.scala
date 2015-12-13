@@ -10,6 +10,6 @@ trait Configure {
   //kim
   val ByeUrl = Some("https://cdn.mirror.wiki/http://i.imgur.com/c6p6IeP.jpg")
   //??
-  def hiText(name: String): String = "여어 @" + name + "상, 히사시부리!"
-  def byeText(name: String): String = "여어 @" + name + "상, 사요나라!"
+  def hiText(name: String): String = "여어 " + name + "상, 히사시부리!"
+  def byeText(name: String): String = "여어 " + name + "상, 사요나라!"
 }
