@@ -49,11 +49,12 @@ object HisasiburiBotRunner extends App with Configure {
   val rtmClient = SlackRtmClient(Token)
   rtmClient.onEvent {
     case e: PresenceChange =>
+      println(e)
       for {
         t <- targetUsers.find(_.id == e.user)
         if(e.user == t.id) 
       } e.presence match {
-        case "active" => postMessage(HiUrl, hiText(t.name))
+        case "active" => postMessage(HiUrl, hiText(t.name)) //don't know why but currently this event occurs twice every time. If this status continues, should add some logic to block it.
         case "away" => postMessage(ByeUrl, byeText(t.name))
         case _ => throw new Exception("Presence is not active or away: " + e)
       }
