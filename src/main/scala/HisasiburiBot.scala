@@ -8,13 +8,12 @@ import scala.concurrent.duration._
 import scala.util.{Try, Success, Failure}
 
 object HisasiburiBotRunner extends App with Configure {
-  //targetNames better naming? targetUsers.size <= targetNames.size
   val client = SlackApiClient(Token)
   val d = 5.seconds
   val loopd: Long = 10000
   val ChannelId = Await.result(client.listChannels(0), d).find(_.name == Channel).get.id
 
-  val res = client.listUsers() // => Future[Seq[Channel]]
+  val res = client.listUsers()
 
   val targetUsers: Seq[User] = Await.result((for {
     users <- res
