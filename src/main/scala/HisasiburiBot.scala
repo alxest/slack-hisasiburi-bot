@@ -20,8 +20,6 @@ object HisasiburiBotRunner extends App with Configure {
     targetUsers = users.filter(u => Names.isEmpty || Names.contains(u.name))
   } yield targetUsers), d)
 
-  Await.result(res, d)
-
   println(targetUsers map (x => x.name + " " + x.id))
 
   def postMessage(image_url: String, text: String): Future[String] = {
