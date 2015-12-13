@@ -21,10 +21,10 @@ object HisasiburiBotRunner extends App with Configure {
 
   println(targetUsers map (x => x.name + " " + x.id))
 
-  def postMessage(image_url: String, text: String): Future[String] = {
+  def postMessage(image_url: Option[String], text: String): Future[String] = {
     val attachment = Attachment(
       fallback = Some("Hisasiburi Failed..."),
-      image_url = Some(image_url),
+      image_url = image_url,
       color = Some("#764FA5")
     )
     println("sending " + text)
