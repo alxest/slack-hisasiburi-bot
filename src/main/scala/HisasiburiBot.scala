@@ -9,8 +9,7 @@ import scala.util.{Try, Success, Failure}
 
 object HisasiburiBotRunner extends App with Configure {
   val client = SlackApiClient(Token)
-  val d = 5.seconds
-  val loopd: Long = 10000
+  val d = Duration.Inf//5.seconds
   val ChannelId = Await.result(client.listChannels(0), d).find(_.name == Channel).get.id
 
   val res = client.listUsers()
@@ -44,4 +43,20 @@ object HisasiburiBotRunner extends App with Configure {
     res
   }
 
+  import slack.rtm.SlackRtmClient
+  import akka.actor.ActorSystem
+  implicit val system = ActorSystem("slack")
+  val rtmClient = SlackRtmClient(Token)
+  rtmClient.onEvent {
+    case e: PresenceChange =>
+      for {
+        t <- targetUsers.find(_.id == e.user)
+        if(e.user == t.id) 
+      } e.presence match {
+        case "active" => postMessage(HiUrl, t.name)
+        case "away" => postMessage(ByeUrl, t.name)
+        case _ => throw new Exception("Presence is not active or away: " + e)
+      }
+    case _ => ()
+  }
 }
