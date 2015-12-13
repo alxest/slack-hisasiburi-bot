@@ -53,8 +53,8 @@ object HisasiburiBotRunner extends App with Configure {
         t <- targetUsers.find(_.id == e.user)
         if(e.user == t.id) 
       } e.presence match {
-        case "active" => postMessage(HiUrl, t.name)
-        case "away" => postMessage(ByeUrl, t.name)
+        case "active" => postMessage(HiUrl, hiText(t.name))
+        case "away" => postMessage(ByeUrl, byeText(t.name))
         case _ => throw new Exception("Presence is not active or away: " + e)
       }
     case _ => ()
