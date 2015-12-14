@@ -28,8 +28,8 @@ Greet your colleague with nice-looking pics.
   + Do NOT use "as_user" when posting message, as user should set profile pic for the bot
 
 ## Future Plan ##
-- Use "outgoing webhook" feature to allow each user to add/remove him/herself from stalking.
-  + With Heroku deployment support
+- Allow each user to add/remove him/herself from stalking.
+- Heroku deployment support?
 
 ## Contribution ##
 - I like functional style.
